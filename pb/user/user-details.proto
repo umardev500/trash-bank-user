@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "pb/user";
+
+message UserPhone {
+    string number = 1;
+    bool is_wa = 2;
+}
+
+message UserAddress {
+    string province = 1;
+    string city = 2;
+    string district = 3;
+    string village = 4;
+    string postal_code = 5;
+    string detail = 6;
+}
+
+message UserDetails {
+    string name = 1;
+    string email = 2;
+    UserPhone phone = 3;
+    UserAddress address = 4;
+}

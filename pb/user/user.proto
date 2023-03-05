@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "pb/user";
+
+import "pb/user/user-details.proto";
+import "pb/user/user-status.proto";
+
+message User {
+    string user_id = 1;
+    string user = 2;
+    string pass = 3;
+    string level = 4;
+    UserDetails details = 5;
+    repeated UserStatus status = 6;
+    int64 created_at = 7;
+    int64 updated_at = 8;
+}

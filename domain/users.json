@@ -1,0 +1,31 @@
+[
+    {
+        "user_id": "1667875859",
+        "user": "schweinstaiger",
+        "pass": "schweinstaiger",
+        "level": "user",
+        "details": {
+            "name": "Sarah Schweinstaiger",
+            "email": "sarahsch@gmail.com",
+            "phone": {
+                "number": "083842765573",
+                "is_wa": true
+            },
+            "address": {
+                "province": "Banten",
+                "city": "Pandeglang",
+                "district": "Patia",
+                "village": "Turus",
+                "postal_code": "42265",
+                "detail": "Kp. Jengkol RT/RW 006/002"
+            }
+        },
+        "status": [
+            {
+                "status_text": "active",
+                "status_time": 1667936752
+            }
+        ],
+        "created_at": 1667936752
+    }
+]
