@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "pb/user";
+
+import "pb/user/user.proto";
+
+
+message UserFindOneRequest {
+    string user_id = 1;
+    string user = 2;
+    string pass = 3;
+    bool is_login = 4;
+}
+
+message UserFindOneResponse {
+    bool is_empty = 1;
+    User payload = 2;
+}

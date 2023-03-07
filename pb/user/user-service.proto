@@ -3,7 +3,9 @@ syntax = "proto3";
 option go_package = "pb/user";
 
 import "pb/user/user-find.proto";
+import "pb/user/user-find-one.proto";
 
 service UserService {
     rpc Find(UserFindRequest) returns (UserFindResponse) {}
+    rpc FindOne(UserFindOneRequest) returns (UserFindOneResponse) {}
 }
