@@ -10,7 +10,7 @@ clean:
 	find pb -name "*.pb.go" -type f -delete
 
 find:
-	grpcurl --plaintext -d '{"search": "patia"}' localhost:5000 UserService.Find
+	grpcurl --plaintext -d '{"search": "patia", "status": "deleted"}' localhost:5000 UserService.Find
 
 findone:
 	grpcurl --plaintext -d '{"user": "schweinstaiger", "pass": "schweinstaiger", "is_login": true}' localhost:5000 UserService.FindOne
