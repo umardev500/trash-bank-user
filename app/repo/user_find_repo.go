@@ -2,28 +2,14 @@ package repo
 
 import (
 	"context"
-	"math"
 	"user/domain"
 	"user/helper"
-	"user/pb/user"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (u *userRepo) Find(ctx context.Context, sort, page, perPage int64, status, search string) (res *user.UserFindResponse, err error) {
-	if sort == 0 {
-		sort = 1
-	}
-	if page == 0 {
-		page = 1
-	}
-	if perPage == 0 {
-		perPage = 10
-	}
-
-	res = &user.UserFindResponse{}
-
+func (u *userRepo) Find(ctx context.Context, sort, page, perPage int64, status, search string) (res []domain.User, rows int64, err error) {
 	filterData1 := helper.GetSerchRegex([]string{
 		"user_id",
 		"user",
@@ -57,38 +43,12 @@ func (u *userRepo) Find(ctx context.Context, sort, page, perPage int64, status, 
 		return
 	}
 
-	var users []*user.User
-	for cur.Next(ctx) {
-		each := domain.User{}
-		err := cur.Decode(&each)
-		if err != nil {
-			return nil, err
-		}
-
-		item := u.parseUser(each)
-		users = append(users, item)
-	}
-
-	if len(users) < 1 {
-		res.IsEmpty = true
+	err = cur.All(ctx, &res)
+	if err != nil {
 		return
 	}
 
-	payload := &user.UserFind{
-		Users: users,
-	}
-
-	// get all rows
-	rows, _ := u.users.CountDocuments(ctx, filter)
-	pages := 1
-	if rows >= perPage {
-		pages = int(math.Ceil(float64(rows) / float64(perPage)))
-	}
-	payload.Rows = rows
-	payload.Pages = int64(pages)
-	payload.PerPage = perPage
-	payload.Total = int64(len(users))
-	res.Payload = payload
+	rows, _ = u.users.CountDocuments(ctx, filter)
 
 	return
 }

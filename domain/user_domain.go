@@ -10,7 +10,7 @@ type UserService interface {
 }
 
 type UserRepo interface {
-	Find(ctx context.Context, sort, pages, perPage int64, status, search string) (res *user.UserFindResponse, err error)
+	Find(ctx context.Context, sort, pages, perPage int64, status, search string) (res []User, rows int64, err error)
 }
 
 type User struct {
