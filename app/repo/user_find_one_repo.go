@@ -10,7 +10,7 @@ import (
 func (u *userRepo) FindOne(ctx context.Context, userId, user, pass string, isLogin bool) (res *domain.User, err error) {
 	filter := bson.M{"user_id": userId}
 	if isLogin {
-		filter = bson.M{"user": user, pass: pass}
+		filter = bson.M{"user": user, "pass": pass}
 	}
 
 	err = u.users.FindOne(ctx, filter).Decode(&res)

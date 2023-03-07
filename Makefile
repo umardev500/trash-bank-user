@@ -13,4 +13,4 @@ find:
 	grpcurl --plaintext -d '{"search": "patia"}' localhost:5000 UserService.Find
 
 findone:
-	grpcurl --plaintext -d '{"user_id": "1667875859"}' localhost:5000 UserService.FindOne
+	grpcurl --plaintext -d '{"user": "schweinstaiger", "pass": "schweinstaiger", "is_login": true}' localhost:5000 UserService.FindOne
