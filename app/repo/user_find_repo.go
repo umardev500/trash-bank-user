@@ -4,7 +4,6 @@ import (
 	"context"
 	"user/domain"
 	"user/helper"
-	"user/variable"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -24,14 +23,10 @@ func (u *userRepo) Find(ctx context.Context, sort, page, perPage int64, status, 
 		"details.address.postal_code",
 	}, search)
 
-	deletedValue := bson.M{"$eq": nil} // default deleted status is not deleted
-	if status == variable.StatusDeleted {
-		deletedValue = bson.M{"$ne": nil}
-	}
-	deletedFilter := bson.M{"status.0.status_text": deletedValue} // deleted filter
+	statusFilter := bson.M{"status.0.status_text": status}
 
 	filterData2 := []bson.M{}
-	filterData2 = append(filterData2, deletedFilter)
+	filterData2 = append(filterData2, statusFilter)
 
 	filter := bson.M{
 		"$or":  filterData1,
