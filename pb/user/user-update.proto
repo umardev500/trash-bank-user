@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option go_package = "pb/user";
+
+import "pb/user/user.proto";
+
+message UserUpdateRequest {
+    string user_id = 1;
+    User payload = 2;
+}

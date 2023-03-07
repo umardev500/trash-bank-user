@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	pb "user/pb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -24,6 +25,7 @@ const _ = grpc.SupportPackageIsVersion7
 type UserServiceClient interface {
 	Find(ctx context.Context, in *UserFindRequest, opts ...grpc.CallOption) (*UserFindResponse, error)
 	FindOne(ctx context.Context, in *UserFindOneRequest, opts ...grpc.CallOption) (*UserFindOneResponse, error)
+	Update(ctx context.Context, in *UserUpdateRequest, opts ...grpc.CallOption) (*pb.OperationResponse, error)
 }
 
 type userServiceClient struct {
@@ -52,12 +54,22 @@ func (c *userServiceClient) FindOne(ctx context.Context, in *UserFindOneRequest,
 	return out, nil
 }
 
+func (c *userServiceClient) Update(ctx context.Context, in *UserUpdateRequest, opts ...grpc.CallOption) (*pb.OperationResponse, error) {
+	out := new(pb.OperationResponse)
+	err := c.cc.Invoke(ctx, "/UserService/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
 	Find(context.Context, *UserFindRequest) (*UserFindResponse, error)
 	FindOne(context.Context, *UserFindOneRequest) (*UserFindOneResponse, error)
+	Update(context.Context, *UserUpdateRequest) (*pb.OperationResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -70,6 +82,9 @@ func (UnimplementedUserServiceServer) Find(context.Context, *UserFindRequest) (*
 }
 func (UnimplementedUserServiceServer) FindOne(context.Context, *UserFindOneRequest) (*UserFindOneResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindOne not implemented")
+}
+func (UnimplementedUserServiceServer) Update(context.Context, *UserUpdateRequest) (*pb.OperationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -120,6 +135,24 @@ func _UserService_FindOne_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/UserService/Update",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Update(ctx, req.(*UserUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +167,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindOne",
 			Handler:    _UserService_FindOne_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _UserService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
