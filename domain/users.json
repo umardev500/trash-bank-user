@@ -24,6 +24,10 @@
             {
                 "status_text": "active",
                 "status_time": 1667936752
+            },
+            {
+                "status_text": "deleted",
+                "status_time": 1667936752
             }
         ],
         "created_at": 1667936752

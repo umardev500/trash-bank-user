@@ -6,7 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func NoEmpty(source bson.D, dest *bson.D) {
+func RemoveEmpty(source bson.D, dest *bson.D) {
 	out := bson.D{}
 
 	for _, val := range source {
