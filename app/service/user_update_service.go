@@ -18,6 +18,7 @@ func (u *userService) Update(ctx context.Context, req *user.UserUpdateRequest) (
 	var detailData bson.D
 	if payload.Details != nil {
 		details := payload.Details
+		// phone
 		phone := details.Phone
 		var userPhone bson.D
 		if phone != nil {
@@ -27,6 +28,7 @@ func (u *userService) Update(ctx context.Context, req *user.UserUpdateRequest) (
 			}
 		}
 
+		// address
 		address := details.Address
 		var userAddress bson.D
 		if address != nil {
@@ -40,6 +42,7 @@ func (u *userService) Update(ctx context.Context, req *user.UserUpdateRequest) (
 			}
 		}
 
+		// detail
 		detailData = bson.D{
 			{Key: "details.name", Value: details.Name},
 			{Key: "details.email", Value: details.Name},
@@ -49,6 +52,18 @@ func (u *userService) Update(ctx context.Context, req *user.UserUpdateRequest) (
 	}
 
 	helper.RemoveEmpty(detailData, &detailData)
+
+	var newStatus bson.M
+	if payload != nil {
+		// status
+		if payload.Status != nil {
+			status := payload.Status[0]
+			newStatus = bson.M{
+				"status_text": status.StatusText,
+				"status_time": helper.GetTime(nil),
+			}
+		}
+	}
 
 	updatedTime := helper.GetTime(nil)
 	var userData bson.D
@@ -70,7 +85,7 @@ func (u *userService) Update(ctx context.Context, req *user.UserUpdateRequest) (
 	}
 
 	// do update
-	res, err = u.repo.Update(ctx, userId, userData)
+	res, err = u.repo.Update(ctx, userId, userData, newStatus)
 	if err != nil {
 		return
 	}

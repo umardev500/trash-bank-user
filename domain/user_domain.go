@@ -17,7 +17,7 @@ type UserService interface {
 type UserRepo interface {
 	Find(ctx context.Context, sort, pages, perPage int64, status, search string) (res []User, rows int64, err error)
 	FindOne(ctx context.Context, userId, user, pass string, isLogin bool) (res *User, err error)
-	Update(ctx context.Context, userId string, payload bson.D) (res *pb.OperationResponse, err error)
+	Update(ctx context.Context, userId string, payload bson.D, status bson.M) (res *pb.OperationResponse, err error)
 }
 
 type User struct {
