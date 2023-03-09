@@ -16,4 +16,4 @@ findone:
 	grpcurl --plaintext -d '{"user": "schweinstaiger", "pass": "schweinstaiger", "is_login": true}' localhost:5000 UserService.FindOne
 
 update:
-	grpcurl --plaintext -d '{"user_id": "1667875859", "payload": {"user": "jack", "pass": "jack"}}' localhost:5000 UserService.Update
+	grpcurl --plaintext -d '{"user_id": "1667875859", "payload": {"user": "jack", "pass": "jack", "details": { "name": "Sarah Schweinstaiger", "email": "sarahsch@gmail.com", "phone": { "number": "083842765573", "is_wa": "yes" }, "address": { "province": "Banten", "city": "Pandeglang", "district": "Patia", "village": "Turus", "postal_code": "42265", "detail": "Kp. Jengkol RT/RW 006/002" }}}}' localhost:5000 UserService.Update

@@ -15,6 +15,41 @@ func (u *userService) Update(ctx context.Context, req *user.UserUpdateRequest) (
 	userId := req.UserId
 	payload := req.Payload
 
+	var detailData bson.D
+	if payload.Details != nil {
+		details := payload.Details
+		phone := details.Phone
+		var userPhone bson.D
+		if phone != nil {
+			userPhone = bson.D{
+				{Key: "details.phone.number", Value: phone.Number},
+				{Key: "details.phone.is_wa", Value: phone.IsWa},
+			}
+		}
+
+		address := details.Address
+		var userAddress bson.D
+		if address != nil {
+			userAddress = bson.D{
+				{Key: "details.address.province", Value: address.Province},
+				{Key: "details.address.city", Value: address.City},
+				{Key: "details.address.district", Value: address.District},
+				{Key: "details.address.village", Value: address.Village},
+				{Key: "details.address.postal_code", Value: address.PostalCode},
+				{Key: "details.address.detail", Value: address.Detail},
+			}
+		}
+
+		detailData = bson.D{
+			{Key: "details.name", Value: details.Name},
+			{Key: "details.email", Value: details.Name},
+		}
+		detailData = append(detailData, userPhone...)
+		detailData = append(detailData, userAddress...)
+	}
+
+	helper.RemoveEmpty(detailData, &detailData)
+
 	var userData bson.D
 	if payload != nil {
 		userData = bson.D{
@@ -26,6 +61,7 @@ func (u *userService) Update(ctx context.Context, req *user.UserUpdateRequest) (
 
 		helper.RemoveEmpty(userData, &userData)
 	}
+	userData = append(userData, detailData...)
 
 	if userData == nil {
 		err = errors.New(http.StatusText(http.StatusBadRequest))

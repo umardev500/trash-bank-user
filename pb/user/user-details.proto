@@ -4,7 +4,7 @@ option go_package = "pb/user";
 
 message UserPhone {
     string number = 1;
-    bool is_wa = 2;
+    string is_wa = 2;
 }
 
 message UserAddress {
