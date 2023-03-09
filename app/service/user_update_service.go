@@ -50,13 +50,14 @@ func (u *userService) Update(ctx context.Context, req *user.UserUpdateRequest) (
 
 	helper.RemoveEmpty(detailData, &detailData)
 
+	updatedTime := helper.GetTime(nil)
 	var userData bson.D
 	if payload != nil {
 		userData = bson.D{
 			{Key: "user", Value: payload.User},
 			{Key: "pass", Value: payload.Pass},
 			{Key: "level", Value: payload.Level},
-			{Key: "updated_at", Value: 1000},
+			{Key: "updated_at", Value: updatedTime},
 		}
 
 		helper.RemoveEmpty(userData, &userData)
